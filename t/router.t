@@ -5,9 +5,10 @@ use Gears::Router;
 # This tests whether the basic router works
 ################################################################################
 
-subtest 'router should produce valid locations' => sub {
-	my $r = Gears::Router->new;
+my $r = Gears::Router->new;
 
+subtest 'router should produce valid locations' => sub {
+	$r->clear;
 	my $loc1 = $r->add('/test');
 	my $loc2 = $loc1->add('/deep');
 
@@ -18,7 +19,7 @@ subtest 'router should produce valid locations' => sub {
 };
 
 subtest 'router should match locations' => sub {
-	my $r = Gears::Router->new;
+	$r->clear;
 
 	my $t1 = $r->add('/test1');
 	my $t1l1 = $t1->add('/1');

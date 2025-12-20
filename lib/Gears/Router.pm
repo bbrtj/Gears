@@ -30,3 +30,8 @@ sub match ($self, $request_path)
 	return @matched;
 }
 
+sub clear ($self)
+{
+	$self->locations->@* = ();
+}
+
