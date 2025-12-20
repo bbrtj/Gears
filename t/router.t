@@ -16,8 +16,10 @@ subtest 'router should produce valid locations' => sub {
 	my $loc1 = $r->add('/test');
 	my $loc2 = $loc1->add('/deep');
 
-	is $loc1->path, '/test', 'bridge ok';
-	is $loc2->path, '/test/deep', 'location ok';
+	is $loc1->pattern, '/test', 'bridge ok';
+	is $loc2->pattern, '/test/deep', 'location ok';
+
+	is $loc2->build, '/test/deep', 'build method works';
 };
 
 subtest 'router should match locations' => sub {

@@ -10,12 +10,12 @@ has param 'parent' => (
 	weak_ref => 1,
 );
 
-has param 'path' => (
+has param 'pattern' => (
 	isa => Str,
 );
 
-has field '_comparator' => (
-	isa => InstanceOf ['Gears::Router::Comparator'],
+has field '_pattern_obj' => (
+	isa => InstanceOf ['Gears::Router::Pattern'],
 	lazy => 1,
 );
 
@@ -23,9 +23,9 @@ with qw(
 	Gears::Router::Proto
 );
 
-sub _build_comparator ($self)
+sub _build_pattern_obj ($self)
 {
-	return load_package($self->router->comparator_impl)->new(
+	return load_package($self->router->pattern_impl)->new(
 		location => $self,
 	);
 }
@@ -36,7 +36,7 @@ sub _build_router ($self)
 }
 
 around match => sub ($orig, $self, $request_path) {
-	if ($self->_comparator->compare($request_path)) {
+	if ($self->_pattern_obj->compare($request_path)) {
 		my $result = $self->$orig($request_path);
 		unshift $result->@*, $self;
 		return $result;
@@ -44,4 +44,9 @@ around match => sub ($orig, $self, $request_path) {
 
 	return [];
 };
+
+sub build ($self, @more_args)
+{
+	return $self->_pattern_obj->build(@more_args);
+}
 

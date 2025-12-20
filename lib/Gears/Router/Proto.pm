@@ -7,7 +7,7 @@ use Gears qw(load_package);
 
 requires qw(
 	_build_router
-	path
+	pattern
 );
 
 has field 'router' => (
@@ -21,12 +21,12 @@ has field 'locations' => (
 	default => sub { [] },
 );
 
-sub add ($self, $path, %data)
+sub add ($self, $pattern, %data)
 {
 	my $location = load_package($self->router->location_impl)->new(
 		%data,
 		parent => $self,
-		path => $self->path . $path,
+		pattern => $self->pattern . $pattern,
 	);
 
 	push $self->locations->@*, $location;
