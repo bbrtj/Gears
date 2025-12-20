@@ -15,14 +15,12 @@ has param 'pattern_impl' => (
 
 with qw(Gears::Router::Proto);
 
+has extended 'router' => (
+	default => sub ($self) { return $self },
+);
+
 sub pattern ($self)
 {
 	return '';
-}
-
-sub _build_router ($self)
-{
-	# we are the router
-	return $self;
 }
 

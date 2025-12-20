@@ -5,11 +5,6 @@ use Mooish::Base -standard;
 
 use Gears qw(load_package);
 
-has param 'parent' => (
-	isa => ConsumerOf ['Gears::Router::Proto'],
-	weak_ref => 1,
-);
-
 has param 'pattern' => (
 	isa => Str,
 );
@@ -28,11 +23,6 @@ sub _build_pattern_obj ($self)
 	return load_package($self->router->pattern_impl)->new(
 		location => $self,
 	);
-}
-
-sub _build_router ($self)
-{
-	return $self->parent->router;
 }
 
 around match => sub ($orig, $self, $request_path) {

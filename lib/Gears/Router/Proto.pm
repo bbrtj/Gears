@@ -6,14 +6,12 @@ use Mooish::Base -standard, -role;
 use Gears qw(load_package);
 
 requires qw(
-	_build_router
 	pattern
 );
 
-has field 'router' => (
+has param 'router' => (
 	isa => InstanceOf ['Gears::Router'],
 	weak_ref => 1,
-	lazy => 1,
 );
 
 has field 'locations' => (
@@ -25,7 +23,7 @@ sub add ($self, $pattern, %data)
 {
 	my $location = load_package($self->router->location_impl)->new(
 		%data,
-		parent => $self,
+		router => $self->router,
 		pattern => $self->pattern . $pattern,
 	);
 
