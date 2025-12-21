@@ -168,10 +168,8 @@ sub build ($self, %args)
 			unless defined $value || $optional;
 
 		my $to_replace = qr{
-			\{?                      # may be embraced in curlies
-				\Q$token->{sigil}\E
-				$token->{label}
-			\}?
+			\Q$token->{sigil}\E
+			$token->{label}
 		}x;
 
 		if (defined $value) {
@@ -179,10 +177,11 @@ sub build ($self, %args)
 			Gears::X->raise("bad value for placeholder $token->{sigil}$token->{label}")
 				if $check && $value !~ /^$check$/;
 
-			$pattern =~ s{$to_replace}{$value};
+			$pattern =~ s{\{?$to_replace\}?}{$value};
 		}
 		else {
-			$pattern =~ s{/?$to_replace}{};
+			# slash should be removed as well for optional placeholders (if no brackets)
+			$pattern =~ s{/$to_replace|\{?$to_replace\}?}{};
 		}
 	}
 

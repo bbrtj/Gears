@@ -54,6 +54,21 @@ _build(
 	'/abc',
 );
 
+_build(
+	'bracketed slurpy placeholder inside text with a default',
+	'/abc{>def}ghi',
+	{},
+	'/abcjklghi',
+	defaults => {def => 'jkl'},
+);
+
+_build(
+	'bracketed slurpy placeholder after a slash',
+	'/abc/{>def}',
+	{},
+	'/abc/',
+);
+
 done_testing;
 
 sub _build ($name, $pattern, $params, $expected, %args)
