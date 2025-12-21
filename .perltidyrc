@@ -8,6 +8,7 @@
 --continuation-indentation=4
 --extended-continuation-indentation
 --no-delete-old-newlines
+--no-blanks-before-comments
 
 ### ALIGNMENT
 --no-outdent-long-lines
@@ -23,5 +24,4 @@
 --opening-token-right
 
 -gal='first any sum sum0 reduce'
-
 
