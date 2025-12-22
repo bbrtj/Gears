@@ -31,16 +31,16 @@ sub _build_match ($self, $loc, $match_data)
 	);
 }
 
-sub _match_level ($self, $locations, $path)
+sub _match_level ($self, $locations, @args)
 {
 	my @matched;
 	foreach my $loc ($locations->@*) {
-		next unless my $match_data = $loc->pattern_obj->compare($path);
+		next unless my $match_data = $loc->compare(@args);
 		my $match = $self->_build_match($loc, $match_data);
 
 		my $children = $loc->locations;
 		if ($children->@* > 0) {
-			push @matched, [$match, $self->_match_level($children, $path)];
+			push @matched, [$match, $self->_match_level($children, @args)];
 		}
 		else {
 			push @matched, $match;
@@ -50,9 +50,9 @@ sub _match_level ($self, $locations, $path)
 	return @matched;
 }
 
-sub match ($self, $request_path)
+sub match ($self, @args)
 {
-	return [$self->_match_level($self->locations, $request_path)];
+	return [$self->_match_level($self->locations, @args)];
 }
 
 sub flatten ($self, $matches)
