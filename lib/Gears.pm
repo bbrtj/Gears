@@ -16,6 +16,7 @@ use Module::Load qw(load);
 use Exporter qw(import);
 our @EXPORT_OK = qw(
 	load_package
+	get_component_name
 );
 
 sub load_package ($package)
@@ -27,6 +28,11 @@ sub load_package ($package)
 		load $package;
 		$package;
 	};
+}
+
+sub get_component_name ($package, $base)
+{
+	return "${base}::${package}" =~ s{^.+\+}{}r;
 }
 
 __END__
