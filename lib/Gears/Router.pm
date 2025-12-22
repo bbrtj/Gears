@@ -50,9 +50,20 @@ sub _match_level ($self, $locations, @args)
 	return @matched;
 }
 
-sub match ($self, @args)
+sub _match ($self, @args)
 {
 	return [$self->_match_level($self->locations, @args)];
+}
+
+sub match
+{
+	goto \&_match;
+}
+
+sub flat_match ($self, @args)
+{
+	my $matches = $self->_match(@args);
+	return $self->flatten($matches);
 }
 
 sub flatten ($self, $matches)

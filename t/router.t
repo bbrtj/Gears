@@ -88,7 +88,7 @@ subtest 'router should match deeply nested locations' => sub {
 
 	_match($uri, [@to_match, [$l2]], 'match ok');
 
-	my @flat_matches = $r->flatten($r->match($uri));
+	my @flat_matches = $r->flat_match($uri);
 	is [map { $_->location } @flat_matches],
 		[map { exact_ref $_ } @list, $l2],
 		'flat matches ok';
