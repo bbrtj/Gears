@@ -422,7 +422,7 @@ sub _match ($name, $pattern, %args)
 	my $no = delete $args{no};
 	my $par = delete $args{par};
 
-	$r->clear->add($pattern, %args);
+	$r->clear->add($pattern, \%args);
 
 	subtest "should pass case: $name (yes)" => sub {
 		foreach my $case (keys $yes->%*) {

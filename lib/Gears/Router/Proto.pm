@@ -17,10 +17,10 @@ has field 'locations' => (
 	default => sub { [] },
 );
 
-sub add ($self, $pattern, %data)
+sub add ($self, $pattern, $data = {})
 {
 	my $location = $self->router->_build_location(
-		%data,
+		$data->%*,
 		router => $self->router,
 		pattern => $self->pattern . $pattern,
 	);

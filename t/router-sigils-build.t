@@ -13,7 +13,7 @@ my $r = Gears::Test::Router->new(
 );
 
 subtest 'checks should be honored during location building' => sub {
-	my $l = $r->clear->add('/:num', checks => {num => '\d'});
+	my $l = $r->clear->add('/:num' => { checks => {num => '\d'} });
 
 	like dies { $l->build() }, qr/no value for placeholder :num/, 'missing ok';
 	like dies { $l->build(num => 'a') }, qr/bad value for placeholder :num/, 'non-numeric ok';
@@ -75,7 +75,7 @@ done_testing;
 
 sub _build ($name, $pattern, $params, $expected, %args)
 {
-	my $l = $r->clear->add($pattern, %args);
+	my $l = $r->clear->add($pattern, \%args);
 
 	subtest "should pass case: $name" => sub {
 		is $l->build($params->%*), $expected, 'building ok';
