@@ -13,7 +13,7 @@ my $r = Gears::Test::Router->new(
 );
 
 subtest 'checks should be honored during location building' => sub {
-	my $l = $r->clear->add('/:num' => { checks => {num => '\d'} });
+	my $l = $r->clear->add('/:num' => {checks => {num => '\d'}});
 
 	like dies { $l->build() }, qr/no value for placeholder :num/, 'missing ok';
 	like dies { $l->build(num => 'a') }, qr/bad value for placeholder :num/, 'non-numeric ok';

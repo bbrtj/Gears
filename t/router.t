@@ -94,6 +94,26 @@ subtest 'router should match deeply nested locations' => sub {
 		'flat matches ok';
 };
 
+subtest 'flatten + match should equal flat_match' => sub {
+	$r->clear;
+
+	my $t1 = $r->add('/test');
+	my $t1l1 = $t1->add('/1');
+	my $t1l2 = $t1->add('/:sth');
+
+	my $t2 = $r->add('/test/1');
+
+	my $matches = $r->match('/test/1');
+	my @flattened = $r->flatten($matches);
+	my @flat_matches = $r->flat_match('/test/1');
+
+	# convert Match objects to location references for comparison
+	my @flattened_locs = map { $_->location } @flattened;
+	my @flat_matches_locs = map { exact_ref $_->location } @flat_matches;
+
+	is \@flattened_locs, \@flat_matches_locs, 'flatten + match equals flat_match';
+};
+
 done_testing;
 
 sub _rec_map ($sub, @arr)
