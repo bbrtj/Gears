@@ -138,10 +138,10 @@ location implementations are included in the C<Gears::Router::Location::>
 namespace.
 
 Take a look at L<Gears::Router::Location::SigilMatch>, which implements a
-similar placeholders system to L<Kelp>. You may probably want to create a
-subclass of it as well, so that the location contains any useful data.
-Locations included with Gears do not make any assumptions about what kind of
-data you want to hold in them.
+similar placeholders system to L<Kelp>. You may want to create a subclass of it
+as well, so that the location contains any useful data. Locations included
+with Gears do not make any assumptions about what kind of data you want to hold
+in them.
 
 Here is how a minimal working router subclass could be implemented:
 
@@ -152,6 +152,12 @@ Here is how a minimal working router subclass could be implemented:
 	use My::Gears::Router::Location;
 
 	extends 'Gears::Router';
+
+	# "%args" will contain everything that was passed to a "add" call as the
+	# second argument, but may contain additional keys which are needed for
+	# internal bookkeeping:
+	#
+	# $router->add($pattern => { %args })
 
 	sub _build_location ($self, %args)
 	{
@@ -169,8 +175,10 @@ it:
 
 	extends 'Gears::Router::Location::SigilMatch';
 
-	# "param" marks mandatory constructor argument
-	# "CodeRef" is a Type::Tiny type (optional)
+	# - "param" marks mandatory constructor argument
+	# - use "option" instead to mark optional ones
+	# - "CodeRef" is a Type::Tiny type (optional)
+
 	has param 'code' => (
 		isa => CodeRef,
 	);
@@ -227,6 +235,14 @@ nested array structure where matches that have child locations (bridges) are
 represented as array references containing the parent match as the first
 element, and its children's matches as subsequent elements. Each match is a
 L<Gears::Router::Match> object.
+
+Since Gears make no assumptions about the intended use of the router, matching
+does not stop at first non-bridge hit. This means the matching performance is
+stable at I<O(n)>, n being the number of routes. That additional cost may be
+alleviated by organizing routes under bridges. If the bridge does not match,
+its children will not be checked at all, so the application is rewarded for
+having a well-organized routing tree. If required, rewriting matching to stop
+at first hit should be easy enough.
 
 =head3 flat_match
 
