@@ -20,7 +20,9 @@ sub pattern ($self)
 }
 
 # builds a new location - see Gears::Router::Proto
-# can be reimelemented
+# - must create a new subclass of Gears::Router::Location, where %args are
+#   constructor arguments
+# - must be reimelemented
 sub _build_location ($self, %args)
 {
 	...;
@@ -100,13 +102,13 @@ Gears::Router - Pattern matching system
 
 =head1 SYNOPSIS
 
-	use Gears::Router;
+	use My::Gears::Router;
 
-	my $router = Gears::Router->new;
+	my $router = My::Gears::Router->new;
 
 	# Add locations with patterns
-	$router->add('/user/:id', { name => 'user_detail' });
-	$router->add('/blog/*path', { name => 'blog' });
+	$router->add('/user/:id', { code => sub { ... } });
+	$router->add('/blog/*path', { code => sub { ... } });
 
 	# Match against a path
 	my @matches = $router->match('/user/123');
@@ -128,11 +130,52 @@ locations (bridges), allowing for nested route structures. Bridges are matched
 even if there are no matching routes underneath them, and routes are always
 matched in the order of declaration and nesting.
 
+=head1 EXTENDING
+
 This router is abstract and very basic by design. A subclass of it must be
 created, and it must implement the C<_build_location> method. Some example
 location implementations are included in the C<Gears::Router::Location::>
-namespace. Take a look at L<Gears::Router::Location::SigilMatch>, which
-implements a similar placeholders system to L<Kelp>.
+namespace.
+
+Take a look at L<Gears::Router::Location::SigilMatch>, which implements a
+similar placeholders system to L<Kelp>. You may probably want to create a
+subclass of it as well, so that the location contains any useful data.
+Locations included with Gears do not make any assumptions about what kind of
+data you want to hold in them.
+
+Here is how a minimal working router subclass could be implemented:
+
+	package My::Gears::Router;
+
+	use v5.40;
+	use Mooish::Base -standard;
+	use My::Gears::Router::Location;
+
+	extends 'Gears::Router';
+
+	sub _build_location ($self, %args)
+	{
+		return My::Gears::Router::Location->new(%args);
+	}
+
+Here is how a minimal location implementation could be implemented, extending
+L<Gears::Router::Location::SigilMatch> and adding a mandatory code reference to
+it:
+
+	package My::Gears::Router::Location;
+
+	use v5.40;
+	use Mooish::Base -standard;
+
+	extends 'Gears::Router::Location::SigilMatch';
+
+	# "param" marks mandatory constructor argument
+	# "CodeRef" is a Type::Tiny type (optional)
+	has param 'code' => (
+		isa => CodeRef,
+	);
+
+The router implementation above can be used as shown in L</SYNOPSIS>.
 
 =head1 INTERFACE
 
