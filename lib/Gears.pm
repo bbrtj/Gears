@@ -15,17 +15,19 @@ use Module::Load qw(load);
 # TODO: replace with export_lexically when it stabilizes
 use Exporter qw(import);
 our @EXPORT_OK = qw(
-	load_package
+	load_component
 	get_component_name
 );
 
-sub load_package ($package)
+sub load_component ($package)
 {
 	state %loaded;
 
-	# only load package once for a given class name
+	# only load package once for a given class name. Assume components have a
+	# new method (avoids Class::Inspector dependency)
 	return $loaded{$package} //= do {
-		load $package;
+		load $package
+			unless $package->can('new');
 		$package;
 	};
 }

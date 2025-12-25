@@ -3,7 +3,7 @@ package Gears::Test::Router;
 use v5.40;
 use Mooish::Base -standard;
 
-use Gears qw(load_package);
+use Gears qw(load_component);
 
 extends 'Gears::Router';
 
@@ -13,6 +13,6 @@ has param 'location_impl' => (
 
 sub _build_location ($self, %args)
 {
-	return load_package($self->location_impl)->new(%args);
+	return load_component($self->location_impl)->new(%args);
 }
 
