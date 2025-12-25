@@ -15,9 +15,9 @@ package Gears::Test::Logger {
 		isa => ArrayRef,
 	);
 
-	sub _log_message ($self, $message)
+	sub _log_message ($self, $level, $message)
 	{
-		push $self->log_dest->@*, $message;
+		push $self->log_dest->@*, [$level, $message];
 	}
 }
 
@@ -27,16 +27,18 @@ subtest 'should output string messages' => sub {
 
 	$logger->message(error => 'custom test');
 	is scalar @logs, 1, 'message logged';
-	like $logs[0], qr{^\[.+\] \[error\] custom test$}, 'message ok';
+	is $logs[0][0], 'error', 'level ok';
+	like $logs[0][1], qr{^\[.+\] \[ERROR\] custom test$}, 'message ok';
 };
 
 subtest 'should output ref messages' => sub {
 	my @logs;
 	my $logger = Gears::Test::Logger->new(log_dest => \@logs);
 
-	$logger->message(error => ['test1', 'test2']);
+	$logger->message(info => ['test1', 'test2']);
 	is scalar @logs, 1, 'message logged';
-	like $logs[0], qr{^\[.+\] \[error\] \$VAR1 = \[\v\s*'test1'}, 'message ok';
+	is $logs[0][0], 'info', 'level ok';
+	like $logs[0][1], qr{^\[.+\] \[INFO\] \$VAR1 = \[\v\s*'test1'}, 'message ok';
 };
 
 done_testing;
