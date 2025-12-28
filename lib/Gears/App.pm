@@ -32,6 +32,11 @@ sub _build_controllers_base ($self)
 	return (ref $self) . '::Controller';
 }
 
+sub _build_controller ($self, $class)
+{
+	return $class->new(app => $self);
+}
+
 sub set_controllers ($self, @list)
 {
 	my $base = $self->controllers_base;
@@ -39,7 +44,7 @@ sub set_controllers ($self, @list)
 
 	foreach my $name (@list) {
 		my $class = get_component_name($name, $base);
-		push @controllers, load_component($class)->new(app => $self);
+		push @controllers, $self->_build_controller(load_component($class));
 	}
 
 	$self->_set_controllers(\@controllers);
