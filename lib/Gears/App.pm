@@ -17,6 +17,10 @@ has param 'router' => (
 	isa => InstanceOf ['Gears::Router'],
 );
 
+has param 'config' => (
+	isa => InstanceOf ['Gears::Config'],
+);
+
 has field 'controllers' => (
 	isa => ArrayRef [InstanceOf ['Gears::Controller']],
 	writer => -hidden,

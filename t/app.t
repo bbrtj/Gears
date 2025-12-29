@@ -2,6 +2,7 @@ use v5.40;
 use Test2::V1 -ipP;
 use Gears::App;
 use Gears::Context;
+use Gears::Config;
 
 use lib 't/lib';
 use Gears::Test::Router;
@@ -14,9 +15,11 @@ my $router = Gears::Test::Router->new(location_impl => 'Gears::Router::Location:
 my $app;
 
 subtest 'app should be built' => sub {
-	$app = My::Gears::App->new(router => $router);
+	my $config = Gears::Config->new;
+	$app = My::Gears::App->new(router => $router, config => $config);
 
 	is $app->router, exact_ref $router, 'router ok';
+	is $app->config, exact_ref $config, 'config ok';
 	is $app->{build}, 'app built', 'build method ok';
 };
 
