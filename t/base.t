@@ -12,7 +12,7 @@ subtest 'should load packages' => sub {
 
 subtest 'should build component names' => sub {
 	is get_component_name('Logger', 'Gears'), 'Gears::Logger', 'name with base ok';
-	is get_component_name('+Other::Logger', 'Gears'), 'Other::Logger', 'name without base ok';
+	is get_component_name('^Other::Logger', 'Gears'), 'Other::Logger', 'name without base ok';
 };
 
 done_testing;

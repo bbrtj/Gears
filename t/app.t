@@ -26,7 +26,7 @@ subtest 'app should be built' => sub {
 subtest 'should add controllers to an app' => sub {
 	$app->load_controller('C1')
 		->load_controller('C11')
-		->load_controller('+C2')
+		->load_controller('^C2')
 		;
 
 	isa_ok $app->controllers->[0], ['My::Gears::App::Controller::C1'], 'first controller ok';

@@ -34,7 +34,7 @@ sub load_component ($package)
 
 sub get_component_name ($package, $base)
 {
-	return "${base}::${package}" =~ s{^.+\+}{}r;
+	return "${base}::${package}" =~ s{^.+\^}{}r;
 }
 
 __END__
