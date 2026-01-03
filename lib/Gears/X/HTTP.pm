@@ -6,7 +6,7 @@ use Mooish::Base -standard;
 extends 'Gears::X';
 
 has param 'code' => (
-	isa => IntRange [300, 500],
+	isa => IntRange [400, 500],
 );
 
 sub _raise_exception ($self, $code, $message)
