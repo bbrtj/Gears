@@ -56,7 +56,7 @@ sub generate ($self, $name, $target_dir)
 		($target_file, $content) = $self->_process_file($target_file, $content);
 
 		$target_file = path($target_file);
-		$target_file->parent->mkpath;
+		$target_file->parent->mkdir;
 		push @generated, $target_file;
 
 		$target_file->spew({binmode => ':encoding(UTF-8)'}, $content);
