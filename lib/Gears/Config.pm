@@ -255,7 +255,7 @@ Parses a configuration source and returns the resulting hash reference without
 merging it into the current configuration. Uses the same C<$source_type> values
 as L</add>.
 
-Raises L<Gears::X::Config> if no reader can handle the file or if the source
+Raises C<Gears::X::Config> if no reader can handle the file or if the source
 type is unknown.
 
 =head3 merge
@@ -278,5 +278,5 @@ Examples:
 	$config->get('database.host')
 	$config->get('cache.ttl', 3600)
 
-Raises L<Gears::X::Config> if the path traverses through a non-hash value.
+Raises C<Gears::X::Config> if the path traverses through a non-hash value.
 

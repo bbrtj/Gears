@@ -176,5 +176,5 @@ Evaluates the Perl script in the file and returns the resulting hash reference.
 The script is evaluated in a clean package namespace with C<strict> and
 C<warnings> enabled.
 
-Raises L<Gears::X::Config> if there is an error evaluating the script.
+Raises C<Gears::X::Config> if there is an error evaluating the script.
 
