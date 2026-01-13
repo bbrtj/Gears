@@ -19,7 +19,7 @@ has param 'log_format' => (
 );
 
 # implements actual logging of a single message
-# must be reimelemented
+# must be reimplemented
 sub _log_message ($self, $level, $message)
 {
 	...;

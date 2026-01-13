@@ -17,7 +17,7 @@ has param 'paths' => (
 );
 
 # implements actual rendering of a template
-# must be reimelemented
+# must be reimplemented
 sub _render_template ($self, $template_content, $vars)
 {
 	...;
